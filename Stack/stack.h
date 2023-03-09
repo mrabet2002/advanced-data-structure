@@ -5,8 +5,7 @@
 template <typename dataType>
 class Stack
 {
-private:
-    dataType *data;
+protected:
     int size;
     const int maxSize;
 
@@ -15,26 +14,22 @@ public:
     Stack(const Stack &stack);
     bool isEmpty() const;
     bool isFull() const;
-    Stack<dataType> *push(dataType value);
-    dataType pop();
-    dataType peek() const;
+    virtual Stack<dataType> *push(dataType value) = 0;
+    virtual dataType pop() = 0;
+    virtual dataType peek() const = 0;
     int getSize() const;
-    ~Stack();
+    // ~Stack();
 };
 
 template <typename dataType>
 Stack<dataType>::Stack(int _maxSize) : maxSize(_maxSize)
 {
-    data = new dataType[maxSize];
     size = 0;
 }
 
 template <typename dataType>
 Stack<dataType>::Stack(const Stack &stack) : maxSize(stack.maxSize)
 {
-    data = new dataType[maxSize];
-    for (int i = 0; i < size; i++)
-        push(stack.data[i]);
 }
 
 template <typename dataType>
@@ -50,41 +45,9 @@ bool Stack<dataType>::isFull() const
 }
 
 template <typename dataType>
-Stack<dataType> *Stack<dataType>::push(dataType value)
-{
-    if (this->isFull())
-        throw "PushException : Stack is full";
-    data[size++] = value;
-    return this;
-}
-
-template <typename dataType>
-dataType Stack<dataType>::pop()
-{
-    if (this->isEmpty())
-        throw "PopException : Stack is empty";
-    return data[--size];
-}
-
-template <typename dataType>
-dataType Stack<dataType>::peek() const
-{
-    if (this->isEmpty())
-        throw "PopException : Stack is empty";
-    return data[size - 1];
-}
-
-template <typename dataType>
 int Stack<dataType>::getSize() const
 {
     return size;
 }
-
-template <typename dataType>
-Stack<dataType>::~Stack()
-{
-    delete[] data;
-}
-
 
 #endif

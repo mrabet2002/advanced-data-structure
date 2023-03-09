@@ -1,5 +1,6 @@
 #include <iostream>
-#include "stack.h"
+#include "ArrayStack/ArrayStack.h"
+#include "LinkedListStack/LinkedListStack.h"
 
 using namespace std;
 
@@ -42,8 +43,8 @@ double getNumberFromExpression(string expression, int *firstDigitIndex)
 
 double calculateBracketedExpression(string expression)
 {
-    Stack<double> operands;
-    Stack<char> operators;
+    Stack<double> *operands = new LinkedListStack<double>();
+    Stack<char> *operators = new LinkedListStack<char>();
     try
     {
         for (int i = 0; i < expression.size(); i++)
@@ -52,30 +53,30 @@ double calculateBracketedExpression(string expression)
             switch (expression[i])
             {
             case '(':
-                operators.push('(');
+                operators->push('(');
                 break;
             case ')':
-                while ((op = operators.pop()) != '(')
-                    operands.push(
-                        calculate(operands.pop(), operands.pop(), op));
+                while ((op = operators->pop()) != '(')
+                    operands->push(
+                        calculate(operands->pop(), operands->pop(), op));
                 break;
             case '+':
             case '*':
             case '-':
             case '/':
-                operators.push(expression[i]);
+                operators->push(expression[i]);
                 break;
             default:
-                operands.push(
+                operands->push(
                     getNumberFromExpression(expression, &i));
             }
         }
     }
-    catch (const std::exception &e)
+    catch (PopOnEmptyStackException &e)
     {
         std::cerr << e.what() << '\n';
     }
-    return operands.peek();
+    return operands->peek();
 }
 
 int main(int argc, char const *argv[])
