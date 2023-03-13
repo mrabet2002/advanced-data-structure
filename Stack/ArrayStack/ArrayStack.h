@@ -8,7 +8,6 @@ class ArrayStack : public Stack<dataType>
 {
 private:
     dataType *data;
-
 public:
     ArrayStack(int _maxSize = 100);
     ArrayStack(const ArrayStack &arrayStack);
@@ -46,7 +45,7 @@ template <typename dataType>
 dataType ArrayStack<dataType>::pop()
 {
     if (this->isEmpty())
-        throw "PopException : ArrayStack is empty";
+        throw PopOnEmptyStackException();
     return data[--this->size];
 }
 
@@ -54,7 +53,7 @@ template <typename dataType>
 dataType ArrayStack<dataType>::peek() const
 {
     if (this->isEmpty())
-        throw "PopException : ArrayStack is empty";
+        throw PeekOnEmptyStackException();
     return data[this->size - 1];
 }
 
