@@ -1,7 +1,8 @@
 #include <iostream>
 #include "../Queue.h"
-#ifndef ARRAY_STACK_INCLUDED
-#define ARRAY_STACK_INCLUDED
+
+#ifndef ARRAY_QUEUE
+#define ARRAY_QUEUE
 
 template <typename dataType>
 class ArrayQueue : public Queue<dataType>

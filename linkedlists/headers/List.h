@@ -30,7 +30,7 @@ protected:
     void resetLength();
     void setHead(Node<Type> *node);
     void setTail(Node<Type> *node);
-    void print();
+    void print() const;
     Node<Type> *get(int index) const;
     int findFirstIndex(Type value);
     Node<Type> *findFirstNode(Type value);
@@ -112,7 +112,7 @@ void List<Type>::setTail(Node<Type> *node)
 }
 
 template <class Type>
-void List<Type>::print()
+void List<Type>::print() const
 {
     if (!this->Empty())
     {

@@ -3,8 +3,8 @@
 #include "exceptions/PeekOnEmptyQueueException.h"
 #include "exceptions/DequeueOnEmptyQueueException.h"
 
-#ifndef STACK_INCLUDED
-#define STACK_INCLUDED
+#ifndef QUEUE
+#define QUEUE
 
 template <typename dataType>
 class Queue
@@ -35,22 +35,22 @@ Queue<dataType>::Queue(const Queue &queue) : capacity(queue.capacity)
 {
 }
 
-// template <typename dataType>
-// bool Queue<dataType>::isEmpty() const
-// {
-//     return !this->size;
-// }
+template <typename dataType>
+bool Queue<dataType>::isEmpty() const
+{
+    return !this->size;
+}
 
-// template <typename dataType>
-// bool Queue<dataType>::isFull() const
-// {
-//     return this->size == this->capacity;
-// }
+template <typename dataType>
+bool Queue<dataType>::isFull() const
+{
+    return this->size == this->capacity;
+}
 
-// template <typename dataType>
-// int Queue<dataType>::getSize() const
-// {
-//     return this->size;
-// }
+template <typename dataType>
+int Queue<dataType>::getSize() const
+{
+    return this->size;
+}
 
 #endif
