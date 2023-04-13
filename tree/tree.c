@@ -1,32 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-typedef struct Node Node;
-
-typedef enum boolean
-{
-    FALSE,
-    TRUE
-} boolean;
-
-struct Node
-{
-    int value;
-    Node *left;
-    Node *right;
-};
-
-// Tree un pointeur vers le node racine.
-typedef Node *Tree;
-
-Node *createNode(int value);
-Tree createTree();
-Tree add(int, Tree, Tree);
-void print(Tree);
-int numNodes(Tree);
-int numLeafs(Tree);
-boolean isLeaf(Tree);
-boolean search(Tree, int);
+#include "tree.h"
 
 Node *createNode(int value)
 {
@@ -37,14 +9,6 @@ Node *createNode(int value)
     node->left = NULL;
     node->right = NULL;
     return node;
-}
-/**
- * Initialise un arbre avec la valeur : value
- * @param value la valeur du noeud.
- */
-Tree createTree()
-{
-    return NULL;
 }
 
 /**
@@ -61,18 +25,21 @@ Tree add(int value, Tree t1, Tree t2)
     return root;
 }
 
-void print(Tree tree)
+void print(Tree tree, int ordre)
 {
-    // Si l'arbre est vide rien ne va etre afficher
-    if (tree)
+    switch (ordre)
     {
-        // Affichage de la racine
-        printf("%d\n", tree->value);
-        if (tree->left)
-            print(tree->left);
-        if (tree->right)
-            print(tree->right);
+    case 0:
+        printOrdre(tree);
+        break;
+    case 1:
+        printPostOrdre(tree);
+        break;
+    case -1:
+        printPreOrdre(tree);
+        break;
     }
+    printf("\n");
 }
 
 int numNodes(Tree tree)
@@ -91,23 +58,80 @@ int numLeafs(Tree tree)
     return numLeafs(tree->left) + numLeafs(tree->right);
 }
 
-boolean isLeaf(Tree tree){
+boolean isLeaf(Tree tree)
+{
     return !tree->left && !tree->right;
 }
 
-boolean search(Tree tree, int value)
+Node **search(Tree *rootPtr, int value)
+{
+    if (!(*rootPtr))
+        return NULL;
+    if ((*rootPtr)->value < value)
+        return search(&(*rootPtr)->right, value);
+    if ((*rootPtr)->value > value)
+        return search(&(*rootPtr)->left, value);
+    return rootPtr;
+}
+
+boolean remove(Tree *rootPtr, int value)
+{
+    Node **foundNodePtr = search(rootPtr, value);
+    if (!foundNodePtr)
+        return FALSE;
+    
+}
+
+boolean exists(Tree tree, int value)
 {
     if (!tree)
         return FALSE;
     if (tree->value == value)
         return TRUE;
-    return search(tree->left, value) || search(tree->right, value);
+    return exists(tree->left, value) || exists(tree->right, value);
 }
 
-int main(int argc, char const *argv[])
+void insert(Tree *ptr_tree, int value)
 {
-    Tree t1 = createTree(), t2 = createNode(50), t3 = createNode(67);
-    t1 = add(20, t1, t2);
-    print(t1);
-    return 0;
+    if (*ptr_tree == NULL)
+    {
+        *ptr_tree = createNode(value);
+    }
+    else
+    {
+        if ((*ptr_tree)->value <= value)
+            insert(&(*ptr_tree)->right, value);
+        else
+            insert(&(*ptr_tree)->left, value);
+    }
+}
+
+void printOrdre(Tree tree)
+{
+    if (tree)
+    {
+        printOrdre(tree->left);
+        printf("%d ", tree->value);
+        printOrdre(tree->right);
+    }
+}
+
+void printPreOrdre(Tree tree)
+{
+    if (tree)
+    {
+        printPreOrdre(tree->left);
+        printPreOrdre(tree->right);
+        printf("%d ", tree->value);
+    }
+}
+
+void printPostOrdre(Tree tree)
+{
+    if (tree)
+    {
+        printf("%d ", tree->value);
+        printPostOrdre(tree->left);
+        printPostOrdre(tree->right);
+    }
 }
